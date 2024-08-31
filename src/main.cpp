@@ -56,6 +56,9 @@ void TypeCommand(std::vector<std::string> args){
 		printf("%s: not found\n",args[1].c_str());
 }
 
+void StartProgram(std::string command){
+	system(command.c_str());
+}
 
 int main() {
   // Flush after every std::cout / std:cerr
@@ -81,10 +84,21 @@ int main() {
     std::string input;
     std::getline(std::cin, input);
     std::vector<std::string> cmd = SplitString(input,' ');
-    if(cmd.empty()) continue; 
-    if(commands.find(cmd[0]) != commands.end()){
+		if(cmd.empty()) continue; 
+    
+		if(commands.find(cmd[0]) != commands.end()){
       commands[cmd[0]](cmd);
     }else{
+
+			if(external_commands.find(cmd[0]) != external_commands.end()){
+				std::string args;
+				args.append(external_commands[cmd[0]].string());
+				for(int i = 1;i < cmd.size();i++){
+					args.append(cmd[i]);
+				}
+				StartProgram(args);
+				continue;
+			}
       std::cout << input << ": command not found" << std::endl;
     }
   }
