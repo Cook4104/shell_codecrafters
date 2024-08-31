@@ -5,6 +5,9 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 std::vector<std::string> SplitString(std::string pString,char delim){
   std::vector<std::string> strings;
@@ -19,6 +22,18 @@ std::vector<std::string> SplitString(std::string pString,char delim){
 
 typedef void (*Command)(std::vector<std::string> args);
 
+void ExitCommand(std::vector<std::string> args);
+void EchoCommand(std::vector<std::string> args);
+void TypeCommand(std::vector<std::string> args);
+
+std::unordered_map<std::string, Command> commands{
+  {"exit",ExitCommand},
+  {"echo",EchoCommand},
+  {"type",TypeCommand}
+};
+
+std::unordered_map<std::string,std::filesystem::path> external_commands;
+
 void ExitCommand(std::vector<std::string> args){
   exit(0);
 }
@@ -32,15 +47,34 @@ void EchoCommand(std::vector<std::string> args){
   std::cout << std::endl;
 }
 
-std::unordered_map<std::string, Command> commands{
-  {"exit",ExitCommand},
-  {"echo",EchoCommand}
-};
+void TypeCommand(std::vector<std::string> args){
+  std::string path = std::string(getenv("PATH"));
+  if(commands.find(args[1]) != commands.end())
+    std::cout << args[1] << " is a shell builtin" << std::endl;
+  else if(external_commands.find(args[1]) != external_commands.end())
+		printf("%s is %s\n",args[1].c_str(),external_commands[args[1]].c_str());
+	else
+		printf("%s: not found\n",args[1].c_str());
+}
+
 
 int main() {
   // Flush after every std::cout / std:cerr
   std::cout << std::unitbuf;
   std::cerr << std::unitbuf;  
+
+  std::string ENV_PATH = std::string(getenv("PATH"));
+  std::vector<std::string> pathStrings = SplitString(ENV_PATH, ':');
+
+  // Get commands in PATH
+   for(std::string s : pathStrings){
+    fs::path currentPath = fs::path(s);
+
+    if(!fs::exists(currentPath)) continue;
+    for(const auto& entry : fs::directory_iterator(fs::path(s))){
+      external_commands.insert({entry.path().filename().string(),entry.path()});
+    }
+  } 
 
   while(1){
     std::cout << "$ ";
