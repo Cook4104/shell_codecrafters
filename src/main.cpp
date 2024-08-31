@@ -89,6 +89,7 @@ int main() {
     std::cout << "$ ";
 
     std::string input;
+		std::cout << input << std::endl;
     std::getline(std::cin, input);
     std::vector<std::string> cmd = SplitString(input,' ');
 		if(cmd.empty()) continue; 
