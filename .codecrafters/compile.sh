@@ -14,4 +14,4 @@ echo Compiling Program!
 cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake
 cmake --build ./build
 
-chmod u+x your_program.sh
+chmod u+x ./.codecrafters/run.sh 
