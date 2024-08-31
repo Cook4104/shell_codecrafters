@@ -32,6 +32,7 @@ std::unordered_map<std::string, Command> commands{
 };
 
 std::unordered_map<std::string,std::filesystem::path> external_commands;
+std::unordered_map<std::string,std::filesystem::path> local_executables;
 
 void ExitCommand(std::vector<std::string> args){
   exit(0);
@@ -77,6 +78,12 @@ int main() {
       external_commands.insert({entry.path().filename().string(),entry.path()});
     }
   } 
+	
+	// Get commands in current directory
+	for(const auto& entry : fs::directory_iterator(fs::current_path())){
+		 if(entry.is_regular_file())
+			local_executables.insert({entry.path().filename().string(),entry.path()});
+	}
 
   while(1){
     std::cout << "$ ";
@@ -89,7 +96,10 @@ int main() {
 		if(commands.find(cmd[0]) != commands.end()){
       commands[cmd[0]](cmd);
     }else{
-
+			if(local_executables.find(cmd[0]) != local_executables.end()){
+				StartProgram("./"+input);
+				continue;
+			}
 			if(external_commands.find(cmd[0]) != external_commands.end()){
 				StartProgram(input);
 				continue;
