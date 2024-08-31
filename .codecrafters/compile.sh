@@ -11,7 +11,7 @@ set -e
 
 echo Compiling Program!
 
-ls
+which my_exe
 
 cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake
 cmake --build ./build
