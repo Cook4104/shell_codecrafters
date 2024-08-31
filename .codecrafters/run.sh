@@ -8,5 +8,5 @@
 
 # Exit early if any commands fail
 set -e
-ls
+
 ./build/shell "$@"
