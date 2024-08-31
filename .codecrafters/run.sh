@@ -8,5 +8,5 @@
 
 # Exit early if any commands fail
 set -e
-echo "TestChange"
+
 ./build/shell "$@"
