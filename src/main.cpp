@@ -91,12 +91,7 @@ int main() {
     }else{
 
 			if(external_commands.find(cmd[0]) != external_commands.end()){
-				std::string args;
-				args.append(external_commands[cmd[0]].string());
-				for(int i = 1;i < cmd.size();i++){
-					args.append(cmd[i]);
-				}
-				StartProgram(args);
+				StartProgram(input);
 				continue;
 			}
       std::cout << input << ": command not found" << std::endl;
