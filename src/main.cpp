@@ -19,7 +19,6 @@ std::vector<std::string> SplitString(std::string pString,char delim){
   return strings;
 }
 
-
 typedef void (*Command)(std::vector<std::string> args);
 
 void ExitCommand(std::vector<std::string> args);
