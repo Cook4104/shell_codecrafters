@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 std::vector<std::string> SplitString(std::string pString,char delim){
   std::vector<std::string> strings;
@@ -22,10 +23,18 @@ void ExitCommand(std::vector<std::string> args){
   exit(0);
 }
 
-void Nothing(std::vector<std::string> args){}
+void EchoCommand(std::vector<std::string> args){
+  for(int i = 0;i < args.size();i++){
+    if(i==0)continue;
+    args[i].erase(std::remove(args[i].begin(), args[i].end(), ' '),args[i].end());
+    std::cout << (i == 1 ? "" : " ") << args[i] << "";
+  }
+  std::cout << std::endl;
+}
 
 std::unordered_map<std::string, Command> commands{
-  {"exit",ExitCommand}
+  {"exit",ExitCommand},
+  {"echo",EchoCommand}
 };
 
 int main() {
