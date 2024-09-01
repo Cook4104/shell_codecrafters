@@ -81,6 +81,7 @@ int main() {
   std::cout << std::unitbuf;
   std::cerr << std::unitbuf;  
 
+
   GetPathCommands();
   external_commands.clear();
   GetPathCommands();
