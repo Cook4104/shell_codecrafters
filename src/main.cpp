@@ -68,6 +68,15 @@ void PwdCommand(std::vector<std::string> args){
 
 void CDCommand(std::vector<std::string> args){
   fs::path targetDirectory = fs::path(args[1]);
+
+  if(args[1].find('~') != std::string::npos){
+    std::string homeDir = args[1];
+    size_t tildePos = homeDir.find('~');
+    homeDir.replace(tildePos,1,getenv("HOME"));
+    targetDirectory = fs::path(homeDir);
+  }
+
+
   if(!fs::exists(targetDirectory)){
     std::cerr << "cd: " << args[1] << ": No such file or directory" << std::endl;
     return;
@@ -76,7 +85,7 @@ void CDCommand(std::vector<std::string> args){
     std::cerr << "cd: not a directory: " << args[1] << std::endl;
     return;
   }
-  working_directory = fs::canonical(fs::path(args[1]));
+  working_directory = fs::canonical(targetDirectory);
   fs::current_path(working_directory);
 }
 void StartProgram(std::string command){
