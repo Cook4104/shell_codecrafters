@@ -61,11 +61,7 @@ void StartProgram(std::string command){
 	system(command.c_str());
 }
 
-int main() {
-  // Flush after every std::cout / std:cerr
-  std::cout << std::unitbuf;
-  std::cerr << std::unitbuf;  
-
+void GetPathCommands(){
   std::string ENV_PATH = std::string(getenv("PATH"));
   std::vector<std::string> pathStrings = SplitString(ENV_PATH, ':');
 
@@ -78,6 +74,14 @@ int main() {
       external_commands.insert({entry.path().filename().string(),entry.path()});
     }
   } 
+}
+
+int main() {
+  // Flush after every std::cout / std:cerr
+  std::cout << std::unitbuf;
+  std::cerr << std::unitbuf;  
+
+  GetPathCommands();
 	
 	// Get commands in current directory
 	for(const auto& entry : fs::directory_iterator(fs::current_path())){
@@ -86,6 +90,10 @@ int main() {
 	}
 
   while(1){
+    //Update PATH
+    external_commands.clear();
+    GetPathCommands();
+
     std::cout << "$ ";
 
     std::string input;
