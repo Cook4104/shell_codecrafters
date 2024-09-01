@@ -71,6 +71,7 @@ void GetPathCommands(){
 
     if(!fs::exists(currentPath)) continue;
     for(const auto& entry : fs::directory_iterator(fs::path(s))){
+      printf("%s\n",entry.path().filename().c_str());
       external_commands.insert({entry.path().filename().string(),entry.path()});
     }
   } 
