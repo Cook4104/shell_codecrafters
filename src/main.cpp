@@ -71,7 +71,6 @@ void GetPathCommands(){
 
     if(!fs::exists(currentPath)) continue;
     for(const auto& entry : fs::directory_iterator(fs::path(s))){
-      printf("%s\n",entry.path().filename().c_str());
       external_commands.insert({entry.path().filename().string(),entry.path()});
     }
   } 
@@ -83,7 +82,9 @@ int main() {
   std::cerr << std::unitbuf;  
 
   GetPathCommands();
-	
+  external_commands.clear();
+  GetPathCommands();
+
 	// Get commands in current directory
 	for(const auto& entry : fs::directory_iterator(fs::current_path())){
 		 if(entry.is_regular_file())
