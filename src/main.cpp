@@ -64,7 +64,7 @@ void StartProgram(std::string command){
 void GetPathCommands(){
   std::string ENV_PATH = std::string(getenv("PATH"));
   std::vector<std::string> pathStrings = SplitString(ENV_PATH, ':');
-  std::cerr << ENV_PATH << std::endl;
+  
   // Get commands in PATH
    for(std::string s : pathStrings){
     fs::path currentPath = fs::path(s);
