@@ -24,15 +24,18 @@ typedef void (*Command)(std::vector<std::string> args);
 void ExitCommand(std::vector<std::string> args);
 void EchoCommand(std::vector<std::string> args);
 void TypeCommand(std::vector<std::string> args);
+void PwdCommand(std::vector<std::string> args);
 
 std::unordered_map<std::string, Command> commands{
   {"exit",ExitCommand},
   {"echo",EchoCommand},
-  {"type",TypeCommand}
+  {"type",TypeCommand},
+  {"pwd",PwdCommand}
 };
 
 std::unordered_map<std::string,std::filesystem::path> external_commands;
 std::unordered_map<std::string,std::filesystem::path> local_executables;
+fs::path working_directory = fs::current_path();
 
 void ExitCommand(std::vector<std::string> args){
   exit(0);
@@ -55,6 +58,10 @@ void TypeCommand(std::vector<std::string> args){
 		printf("%s is %s\n",args[1].c_str(),external_commands[args[1]].c_str());
 	else
 		printf("%s: not found\n",args[1].c_str());
+}
+
+void PwdCommand(std::vector<std::string> args){
+  std::cout << working_directory.string() << std::endl;
 }
 
 void StartProgram(std::string command){
