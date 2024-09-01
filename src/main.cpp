@@ -100,7 +100,9 @@ int main() {
     std::getline(std::cin, input);
     std::vector<std::string> cmd = SplitString(input,' ');
 		if(cmd.empty()) continue; 
-    
+   
+    std::cerr << input << std::endl;
+
 		if(commands.find(cmd[0]) != commands.end()){
       commands[cmd[0]](cmd);
     }else{
