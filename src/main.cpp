@@ -101,8 +101,6 @@ int main() {
     std::vector<std::string> cmd = SplitString(input,' ');
 		if(cmd.empty()) continue; 
    
-    //std::cerr << input << std::endl;
-
 		if(commands.find(cmd[0]) != commands.end()){
       commands[cmd[0]](cmd);
     }else{
@@ -111,8 +109,9 @@ int main() {
 				continue;
 			}
 			if(external_commands.find(cmd[0]) != external_commands.end()){
-				StartProgram(input);
-				continue;
+        std::cerr << external_commands[cmd[0]].c_str() << std::endl;
+        StartProgram(input);
+        continue;
 			}
       std::cout << input << ": command not found" << std::endl;
     }
