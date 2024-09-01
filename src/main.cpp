@@ -69,7 +69,7 @@ void PwdCommand(std::vector<std::string> args){
 void CDCommand(std::vector<std::string> args){
   fs::path targetDirectory = fs::path(args[1]);
   if(!fs::exists(targetDirectory)){
-    std::cerr << "cd: no such file or directory: " << args[1] << std::endl;
+    std::cerr << "cd: " << args[1] << ": No such file or diectory" << std::endl;
     return;
   }
   if(fs::is_regular_file(targetDirectory)) {
