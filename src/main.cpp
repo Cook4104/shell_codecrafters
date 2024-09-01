@@ -25,12 +25,14 @@ void ExitCommand(std::vector<std::string> args);
 void EchoCommand(std::vector<std::string> args);
 void TypeCommand(std::vector<std::string> args);
 void PwdCommand(std::vector<std::string> args);
+void CDCommand(std::vector<std::string> args);
 
 std::unordered_map<std::string, Command> commands{
   {"exit",ExitCommand},
   {"echo",EchoCommand},
   {"type",TypeCommand},
-  {"pwd",PwdCommand}
+  {"pwd",PwdCommand},
+  {"cd",CDCommand}
 };
 
 std::unordered_map<std::string,std::filesystem::path> external_commands;
@@ -64,6 +66,19 @@ void PwdCommand(std::vector<std::string> args){
   std::cout << working_directory.string() << std::endl;
 }
 
+void CDCommand(std::vector<std::string> args){
+  fs::path targetDirectory = fs::path(args[1]);
+  if(!fs::exists(targetDirectory)){
+    std::cerr << "cd: no such file or directory: " << args[1] << std::endl;
+    return;
+  }
+  if(fs::is_regular_file(targetDirectory)) {
+    std::cerr << "cd: not a directory: " << args[1] << std::endl;
+    return;
+  }
+  working_directory = fs::canonical(fs::path(args[1]));
+  fs::current_path(working_directory);
+}
 void StartProgram(std::string command){
 	system(command.c_str());
 }
